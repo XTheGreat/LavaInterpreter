@@ -1,0 +1,37 @@
+class myfoo
+{
+final string k  = "hello world";
+string bar = "myword";
+int b = (35 + 5);
+int f = 78;
+int c = 5.600000;
+int d = c;
+bool liar = (true || false);
+int foo1 ()
+{
+}
+int foo ()
+{
+return 57;
+}
+int foo (int c)
+{
+return (10 / 2);
+}
+int foobar (int a)
+{
+int k = 45;
+print ("This is foobar with args!");
+return 34;
+}
+void main ()
+{
+string l;
+int j = 0;
+int val = 5;
+j = foo (3);
+foobar (5);
+read (l);
+}
+
+}

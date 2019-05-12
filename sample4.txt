@@ -1,0 +1,99 @@
+\\ These are some fun functions
+
+class SimpleMath
+{
+
+void fibonacci(int n)
+{
+\\prints a fibonacci sequence
+int c; int first = 0; int second = 1; int next;
+ print("First ");
+ print(n);
+ print(" terms of Fibonacci series are ");
+ c = 0;
+ while(c < n)
+ {
+ if ( c <= 1 )
+ {
+ next = c;
+ }
+ else
+ {
+ next = first + second;
+         first = second;
+         second = next;
+ }
+print(next);
+printline();
+ c++
+ }
+}
+
+bool primeornot(int n)
+{
+	\*for(i = 2; i <= n/2; ++i)
+	    {
+	        // condition for nonprime number
+	        if(n%i == 0)
+	        {
+	            flag = 1;
+	            break;
+	        }
+	    }
+
+	    if (n == 1) 
+	    {
+	      printf("1 is neither a prime nor a composite number.");
+	    }
+	    else 
+	    {
+	        if (flag == 0)
+	          printf("%d is a prime number.", n);
+	        else
+	          printf("%d is not a prime number.", n);
+	    }
+	   *\ 
+}
+
+
+
+void concat(string val1, string val2)
+{
+print(val1 + val2);
+printline();
+}
+
+void remove(string val1, string val2)
+{
+print(val1 - val2);
+printline();
+}
+
+	void main()
+	{
+
+	bool flag;
+	read(flag);
+	float vals = (2.9 + 10 * 7 - 3 + -4.678 + 3);
+
+	print("This is a class of fun methods!");
+	printline();
+	fibonacci(10);
+	printline();
+	print("This is a function to add strings hello + world:");
+	printline();
+	concat("hello","world");
+	print("This is a function to subtract string message - me:");
+	printline();
+	remove("message","me");
+	printline();
+
+	print("Logical operators");
+	printline();
+	flag = (34/5 > 4 ) || (100/20 ==5) && ((vals) > 68.2);
+	print("The value of flag = (34/5 > 4 ) || (100/20 ==5) && ((vals) > 68.2) is : ");
+	print(flag);
+	printline();
+
+	}
+}

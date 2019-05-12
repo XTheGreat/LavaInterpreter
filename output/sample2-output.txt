@@ -1,0 +1,30 @@
+
+This is a function to Add
+First variable is 6
+Second variable is 3
+Result is 9
+
+This is a function to Subtract
+First variable is 6
+Second variable is 3
+Result is 3
+
+This is a function to Divide
+First variable is 6
+Second variable is 3
+Result is 2
+
+This is a function to Multiply
+First variable is 6
+Second variable is 3
+Result is 18
+
+While statement to print values from 1 than 10
+1
+2
+3
+4
+5
+6
+7
+8

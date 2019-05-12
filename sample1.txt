@@ -1,0 +1,17 @@
+\\
+class Person
+{
+	int age;
+	string name;
+	char gender;
+
+	void Person()
+	{
+		age = 0;
+		name = "John Doe";
+		gender = 'M';
+	}
+
+	void Main(int args)
+	{}
+}

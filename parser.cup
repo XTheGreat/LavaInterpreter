@@ -1,0 +1,289 @@
+/*-***
+ *
+ * This is a skeleton CUP file used to generate numeric values for the tokens
+ * recognized by the stand-alone lexer in pascal.flex.  This file has only
+ * terminal declarations, with no Pascal non-terminals or grammar rules yet.
+ * It will be further populated in the example for 330 Assignment 3.
+ *
+ * For CSC 330 Assignment 2, you can build a sym.java file using a skeletal cup
+ * file like this.  Or, you can build sym.java by hand, making sure that each
+ * token has a distinct numeric value.  The cup way is easier in the long run,
+ * but it requires that you download CUP and understand the basics of running
+ * it.
+ *
+ */
+
+import java_cup.runtime.*;
+
+
+terminal ELSE;
+terminal END;
+terminal IF;
+terminal OF;
+terminal CLASS;
+terminal THEN;
+terminal VOID;
+terminal NULL;
+terminal VAR;
+terminal READ;
+terminal PRINT;
+terminal PRINTLINE;
+terminal FINAL;
+terminal WHILE;
+terminal QUESTION;
+terminal RETURN;
+terminal OR;
+terminal AND;
+terminal PLUS;
+terminal MINUS;
+terminal TIMES;
+terminal DIV;
+terminal UPLUS;
+terminal UMINUS;
+terminal PPLUS;
+terminal PMINUS;
+terminal SEMI;
+terminal COLON;
+terminal COMMA;
+terminal LPAR;
+terminal RPAR;
+terminal LCURL;
+terminal RCURL;
+terminal LSQR;
+terminal RSQR;
+terminal EQ;
+terminal GTR;
+terminal LESS;
+terminal LESS_EQ;
+terminal GTR_EQ;
+terminal NOT_EQ;
+terminal TILDA;
+terminal ASSMNT;
+terminal DOT;
+terminal BOOL;
+
+terminal String TRUE, FALSE;
+terminal String IDENT, TYPE, FLOAT, INT, CHAR, STRING;
+
+// non terminals
+non terminal ProgramListAST program;
+non terminal MemberdeclAST memberdecls;
+non terminal FielddeclAST fielddecl, fielddecls;
+non terminal MethoddeclAST methoddecl, methoddecls;
+non terminal ArgdeclAST argdecl;
+non terminal ArgdeclAST argdecls;
+non terminal FinalFielddeclAST optionalfinal;
+non terminal FielddeclAST optionalexpr;
+non terminal MethoddeclAST optionalsemi;
+non terminal optionalelse; // not needed
+non terminal TypeAST type, returntype;
+non terminal ExprAST expr;
+non terminal StmtAST stmts;
+non terminal StmtAST stmt, openstmt;
+non terminal ExprAST name;
+non terminal ArgsAST args;
+non terminal ReadlistStmtAST readlist;
+non terminal PrintlistStmtAST printlist;
+non terminal printlinelist;
+non terminal ExprAST binop;
+
+// precedence right
+// assignment operators are evaluated right to left
+precedence right ASSMNT;
+
+// precedences, left associativity
+precedence left QUESTION, COLON;
+precedence left OR;
+precedence left AND;
+precedence left EQ, NOT_EQ;
+precedence left LESS, GTR, LESS_EQ, GTR_EQ;
+precedence left MINUS, PLUS;
+precedence left TIMES, DIV;
+precedence left UMINUS, UPLUS, TILDA;
+precedence left PPLUS, PMINUS;
+
+
+// here the rules start 
+program			::= CLASS:c IDENT:i LCURL memberdecls:m RCURL
+					{: RESULT = new ProgramListAST(new IdExprAST(i), m); :}
+				;
+memberdecls 	::= fielddecls:f methoddecls:m
+					{: RESULT = new MemberdeclListAST( f, m); :}
+				;
+fielddecls 		::= fielddecls:d fielddecl:f
+					{: RESULT = new FieldListAST(d, f); :}
+					|
+					{: RESULT = new nullFielddeclAST(); :}
+				;		
+methoddecls 	::= methoddecl:m methoddecls:d
+					{: RESULT = new MethodListAST(m , d); :}
+					|
+					{: RESULT = new nullMethoddeclAST(); :}
+				;
+
+fielddecl 		::= FINAL TYPE:t IDENT:i optionalexpr:x SEMI
+					{: RESULT = new FinalTypeFielddeclAST(new ObjectTypeAST(t), i, x); :}
+					| type:t IDENT:i optionalexpr:x SEMI
+					{: RESULT = new TypeFielddeclAST(t, i, x); :}
+					| type:t IDENT:i LSQR INT:n RSQR SEMI
+					{: RESULT = new TypeArrayFielddeclAST(t, i, new IntExprAST(n)); :}
+				;
+optionalfinal	::= FINAL
+					{: RESULT = new FinalFielddeclAST(); :}
+					|
+					{: RESULT = null; :}
+				;
+optionalexpr 	::= ASSMNT expr:e
+					{: RESULT = new OptionalexprFielddeclAST(e); :}
+					|
+					{: RESULT = new nullFielddeclAST(); :}
+				; 
+methoddecl 		::= type:t IDENT:i LPAR argdecls:a RPAR LCURL fielddecls:f stmts:s RCURL optionalsemi:o
+					{: RESULT = new TypeMethoddeclAST(t, i, a, f, s, o ); :}
+					| returntype:r IDENT:i LPAR argdecls:a RPAR LCURL fielddecls:f stmts:s RCURL optionalsemi:o
+					{: RESULT = new TypeMethoddeclAST(r, i, a, f, s, o ); :}
+				;
+optionalsemi 	::= SEMI 
+					{: RESULT = new OptionalsemiMethoddeclAST(); :}
+					|
+					{: RESULT = new nullMethoddeclAST(); :}
+				;
+returntype 		::= VOID
+					{: RESULT = new ObjectTypeAST("void"); :}
+				;
+type 			::= TYPE:t
+					{: RESULT = new ObjectTypeAST(t); :}
+				;
+argdecls 		::= argdecl:a COMMA argdecls:d
+					{: RESULT = new ArgdeclListAST(a , d); :}
+					| argdecl:a
+					{: RESULT = a; :}
+					|
+					{: RESULT = new nullArgdeclAST(); :}
+				;
+argdecl 		::= TYPE:t IDENT:i
+					{: RESULT = new TypeIdArgdeclAST(new ObjectTypeAST(t), new IdExprAST(i)); :}
+					| TYPE:t IDENT:i LSQR RSQR
+					{: RESULT = new TypeIdArrayArgdeclAST(new ObjectTypeAST(t), new IdExprAST(i)); :}
+				;
+stmts 			::= stmt:s stmts:x
+					{: RESULT = new StmtListAST(s, x); :}
+					| openstmt:s stmts:x
+					{: RESULT = new StmtListAST(s, x); :}
+					|
+					{: RESULT = new nullStmtAST(); :}
+				;
+
+stmt 			::= IF LPAR expr:e RPAR stmt:i ELSE stmt:s
+					{: RESULT = new IfStmtElseAST(e, i, s); :}
+					| WHILE LPAR expr:e RPAR stmt:s
+					{: RESULT = new WhileStmtAST(e, s); :}
+					| name:n ASSMNT expr:e SEMI
+					{: RESULT = new NameStmtAST(n, e); :}
+            		| READ LPAR readlist:r RPAR SEMI
+            		{: RESULT = new ReadStmtAST(r); :}
+            		| PRINT LPAR printlist:p RPAR SEMI
+            		{: RESULT = new PrintStmtAST(p); :}
+            		| PRINTLINE LPAR printlinelist:p RPAR SEMI
+            		{: RESULT = new PrintlineStmtAST(); :}
+            		| IDENT:i LPAR RPAR SEMI // args can be empty!
+            		{: RESULT = new IdArgsStmtAST(i); :}
+            		| IDENT:i LPAR args:a RPAR SEMI // args can be empty!
+            		{: RESULT = new IdArgsStmtAST(i, a); :}
+            		| RETURN SEMI
+            		{: RESULT = new ReturnStmtAST(); :}
+            		| RETURN expr:e SEMI
+            		{: RESULT = new ReturnExprStmtAST(e); :}
+            		| name:n PLUS PLUS
+            		{: RESULT = new NameOpStmtAST(n, "+"); :} %prec PMINUS
+            		| name:n MINUS MINUS
+            		{: RESULT = new NameOpStmtAST(n, "-"); :} %prec PPLUS
+            		| LCURL fielddecls:f stmts:s RCURL optionalsemi:o
+            		{: RESULT = new FielddeclsStmtAST(f, s, o); :}
+				;
+openstmt 		::= IF LPAR expr:e RPAR stmt:s
+					{: RESULT = new IfStmtAST(e, s); :}
+					| IF LPAR expr:e RPAR openstmt:o
+					{: RESULT = new IfStmtAST(e, o); :}
+				;
+name 			::= IDENT:i
+					{: RESULT = new IdExprAST(i); :}
+					| IDENT:i LSQR expr:e RSQR
+					{: RESULT = new IdArrayExprAST(i , e); :}
+				;
+args 			::= expr:e COMMA args:a
+					{: RESULT = new ExprArgsAST(e, a); :}
+					| expr:e
+					{: RESULT = new ExprArgsAST(e); :}
+				;
+readlist 		::= name:n COMMA readlist:r
+					{: RESULT = new ReadlistStmtAST(n , r); :}
+					| name:n
+					{: RESULT = new ReadlistStmtAST(n); :}
+				;
+printlist 		::= expr:e COMMA printlist:p
+					{: RESULT = new PrintlistStmtAST(e , p); :}
+					| expr:e
+					{: RESULT = new PrintlistStmtAST(e); :}
+				;
+printlinelist 	::=
+					{: RESULT = null; :}
+				;
+expr 			::= name:n
+					{: RESULT = n; :}
+					| IDENT:i LPAR RPAR // args can be empty!
+            		{: RESULT = new IdArgsExprAST(i); :}
+					| IDENT:i LPAR args:a RPAR
+					{: RESULT = new IdArgsExprAST(i , a); :}
+					| INT:i
+					{: RESULT = new IntExprAST(i); :}
+					| CHAR:c
+					{: RESULT = new CharExprAST(c); :}
+					| STRING:s
+					{: RESULT = new StringExprAST(s); :}
+					| FLOAT:f
+					{: RESULT = new FloatExprAST(f); :}
+					| TRUE:t 
+					{: RESULT = new BoolExprAST(t); :}
+					| FALSE:f
+					{: RESULT = new BoolExprAST(f); :}
+            		| LPAR expr:e RPAR
+            		{: RESULT = e; :}
+            		| TILDA expr:e
+            		{: RESULT = new UnaryExprAST("~" , e); :}
+            		| MINUS expr:e
+            		{: RESULT = new UnaryExprAST("-" , e); :} %prec UMINUS
+            		| PLUS expr:e
+            		{: RESULT = new UnaryExprAST("+" , e); :} %prec UPLUS
+            		| LPAR TYPE:t RPAR expr:e
+            		{: RESULT = new TypeExprAST(t, e); :}
+            		| binop:b
+            		{: RESULT = b; :}
+            		| LPAR expr:e QUESTION expr:x COLON expr:r RPAR 
+            		{: RESULT = new LogicExprAST(e, x, r); :}
+				;
+binop 			::=	expr:e TIMES expr:x
+					{: RESULT = new BinaryExprAST(e, "*", x); :}
+					| expr:e DIV expr:x
+					{: RESULT = new BinaryExprAST(e, "/", x); :}
+					| expr:e PLUS expr:x
+					{: RESULT = new BinaryExprAST(e, "+", x); :}
+					| expr:e MINUS expr:x
+					{: RESULT = new BinaryExprAST(e, "-", x); :}
+					| expr:e LESS expr:x
+					{: RESULT = new BinaryExprAST(e, "<", x); :}
+					| expr:e GTR expr:x
+					{: RESULT = new BinaryExprAST(e, ">", x); :}
+					| expr:e LESS_EQ expr:x
+					{: RESULT = new BinaryExprAST(e, "<=", x); :}
+					| expr:e GTR_EQ expr:x
+					{: RESULT = new BinaryExprAST(e, ">=", x); :}
+					| expr:e EQ expr:x
+					{: RESULT = new BinaryExprAST(e, "==", x); :}
+					| expr:e NOT_EQ expr:x
+					{: RESULT = new BinaryExprAST(e, "<>", x); :}
+					| expr:e OR expr:x
+					{: RESULT = new BinaryExprAST(e, "||", x); :}
+					| expr:e AND expr:x
+					{: RESULT = new BinaryExprAST(e, "&&", x); :}
+				;

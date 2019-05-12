@@ -1,0 +1,48 @@
+\\ This is my program class
+class person
+{
+
+final string eyecolor = "brown";
+char gender
+ = 'F';
+ int height = 0;
+ int ed [ 2 ];
+ bool 
+ alive = true;
+  int age = 1;
+
+  void heal () 
+  { 
+  \\ Fielddecls Stmts 
+    int
+     j;
+     int newage = age+7;
+    if (alive)
+      { 
+      if(age >= 32 || gender == 'F'){
+      while (age < 100 && alive <> false) {
+        print("age is: ");
+        print(age);
+        printline();
+        age = age + 25;
+        }
+      }
+    else
+    {
+    if(alive <> true || age > 100)
+    {
+      age --
+      alive = false;
+      height ++
+      
+    }
+    }
+    }
+  };
+
+  void main()
+  {
+  heal();
+  }
+
+}

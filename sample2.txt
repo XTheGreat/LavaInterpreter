@@ -1,0 +1,116 @@
+\\ Program to check if even or odd
+class Algebra
+{
+
+int add(int a, int b)
+{
+  return (a+b);
+}
+
+int divide(int a, int b)
+{
+  return a/b;
+}
+
+int subtract(int a, int b)
+{
+  return a-b;
+}
+
+int multiply(int a, int b)
+{
+  return a*b;
+}
+
+  void main() {
+    \\display factorial of 10
+    string operation;
+     int val;
+     int a = 6;
+     int b = 3;
+
+     int f = -10;
+     
+
+     \\ Addition
+     operation = "Add";
+     print("This is a function to "+operation);
+     printline();
+     print("First variable is ");
+     print(a);
+     printline();
+     print("Second variable is ");
+     print(b);
+     printline();
+     print("Result is ");
+     val = add(6,3);
+     print(val);
+     printline();
+     printline();
+
+
+     \\ Subtract
+     operation = "Subtract";
+     print("This is a function to "+operation);
+     printline();
+     print("First variable is ");
+     print(a);
+     printline();
+     print("Second variable is ");
+     print(b);
+     printline();
+     print("Result is ");
+     val = subtract(6,3);
+     print(val);
+     printline();
+     printline();
+
+
+     \\ Divide
+     operation = "Divide";
+     print("This is a function to "+operation);
+     printline();
+     print("First variable is ");
+     print(a);
+     printline();
+     print("Second variable is ");
+     print(b);
+     printline();
+     print("Result is ");
+     val = divide(6,3);
+     print(val);
+     printline();
+     printline();
+
+     \\ Multiply
+     operation = "Multiply";
+     print("This is a function to "+operation);
+     printline();
+     print("First variable is ");
+     print(a);
+     printline();
+     print("Second variable is ");
+     print(b);
+     printline();
+     print("Result is ");
+     val = multiply(6,3);
+     print(val);
+     printline();
+     printline();
+
+
+     print("While statement to print values from 1 than 10");
+     printline();
+     
+     while(f<= 10)
+     {
+     if(f < a+b && f> 0)
+     {
+     print(f);
+     printline();
+     }
+      
+      f++
+     }
+  }
+}
